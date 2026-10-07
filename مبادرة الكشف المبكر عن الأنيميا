@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة متابعة مبادرة الكشف المبكر عن الأنيميا</title>
+<style>
+:root {
+  --bg: light-dark(#f5f7fb,#0b1220);
+  --surface: light-dark(#ffffff,#111a2b);
+  --surface2: light-dark(#f8fafc,#172238);
+  --text: light-dark(#172033,#f2f5fb);
+  --muted: light-dark(#64748b,#9aa8bf);
+  --border: light-dark(#e5eaf2,#26344d);
+  --primary: #1769aa;
+  --primary2: #0d8f8a;
+  --danger:#c94b55;
+  --shadow: 0 10px 30px rgba(17,34,68,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.app{min-height:100vh;background:var(--bg);}
+header{padding:30px clamp(20px,5vw,64px) 22px;background:linear-gradient(135deg,#0b3d62,#1769aa 55%,#0d8f8a);color:#fff}
+.header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;max-width:1400px;margin:auto}
+.eyebrow{font-size:13px;opacity:.82;margin-bottom:7px}
+h1{font-size:clamp(25px,3vw,38px);margin:0 0 8px;font-weight:800}
+.subtitle{opacity:.88;font-size:15px}
+.badge{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:9px 13px;border-radius:999px;font-size:13px;white-space:nowrap}
+main{max-width:1400px;margin:0 auto;padding:24px clamp(16px,4vw,48px) 44px}
+ .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:18px}
+ .search-box{flex:1 1 260px;min-width:220px}
+ .search-box input{width:100%;border:0;background:transparent;color:inherit;font:inherit;outline:0}
+ .control-btn{cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit}
+ .control-btn:hover{border-color:var(--primary);transform:translateY(-1px)}
+ .inline-input{width:100px;padding:7px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font:inherit;text-align:center}
+ .percent-input{width:92px}
+.control{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 13px;color:var(--text);box-shadow:var(--shadow)}
+select{border:0;background:transparent;color:inherit;font:inherit;outline:0;min-width:160px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)}
+.kpi{padding:18px 20px;position:relative;overflow:hidden}
+.kpi:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--primary)}
+.kpi:nth-child(2):before{background:var(--primary2)}
+.kpi:nth-child(3):before{background:#e0a21a}
+.kpi:nth-child(4):before{background:var(--danger)}
+.kpi-label{font-size:13px;color:var(--muted);margin-bottom:8px}
+.kpi-value{font-size:29px;font-weight:800;letter-spacing:-.5px}
+.kpi-sub{font-size:12px;color:var(--muted);margin-top:5px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-bottom:18px}
+.section{padding:20px}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+.section-title h2{font-size:17px;margin:0}
+.section-title span{font-size:12px;color:var(--muted)}
+.bars{display:flex;flex-direction:column;gap:18px}
+.bar-row{display:grid;grid-template-columns:78px 1fr 74px;gap:10px;align-items:center}
+.name{font-weight:700;font-size:14px}
+.track{height:13px;background:var(--surface2);border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+.fill{height:100%;background:linear-gradient(90deg,#1769aa,#0d8f8a);border-radius:20px}
+.rate{font-weight:800;font-size:13px;text-align:left;direction:ltr}
+.donut-wrap{display:flex;align-items:center;justify-content:center;min-height:240px}
+.donut{width:178px;height:178px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#1769aa calc(var(--p)*1%), var(--surface2) 0);position:relative}
+.donut:after{content:"";width:118px;height:118px;background:var(--surface);border-radius:50%;position:absolute}
+.donut-center{position:relative;z-index:1;text-align:center}
+.donut-center b{display:block;font-size:27px}
+.donut-center small{color:var(--muted)}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{padding:13px 12px;border-bottom:1px solid var(--border);text-align:right}
+th{font-size:12px;color:var(--muted);background:var(--surface2)}
+td{font-size:14px}
+.num{font-variant-numeric:tabular-nums}
+.status{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}
+.good{background:#e8f6f1;color:#08735f}
+.warn{background:#fff5db;color:#946300}
+.bad{background:#fdebed;color:#a52f3b}
+.alert{padding:16px 18px;border-radius:14px;background:light-dark(#fff8e8,#2a2414);border:1px solid light-dark(#f1d88d,#5c4a1e);color:var(--text);line-height:1.7}
+.alert strong{color:light-dark(#8c6100,#f1c95d)}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:10px}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+@media(max-width:560px){.kpis{grid-template-columns:1fr}.header-row{display:block}.badge{display:inline-block;margin-top:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="header-row">
+  <div>
+   <div class="eyebrow">لوحة مؤشرات تنفيذية • منطقة شمال سوهاج</div>
+   <h1>مبادرة الكشف المبكر عن الأنيميا</h1>
+   <div class="subtitle">تقرير تفاعلي لمتابعة الفحص والتسجيل ومؤشرات جودة البيانات</div>
+  </div>
+  <div class="badge" id="syncBadge">وضع العرض المحلي</div>
+ </div>
+</header>
+<main>
+ <div class="controls">
+  <div class="control">الإدارة: <select id="filter"><option value="all">كل الإدارات</option></select></div>
+  <div class="control">المؤشر: <select id="metric"><option value="rate">نسبة التسجيل</option><option value="screened">الفحص</option><option value="registered">التسجيل</option><option value="gap">الفرق</option></select></div>
+  <div class="control">الدولة: <select id="country"><option value="all">كل الدول</option></select></div>
+  <div class="control">الفترة: <select id="period"><option value="all">كل الفترات</option></select></div>
+  <label class="control search-box">🔎 <input id="search" type="search" placeholder="ابحث عن المدينة / الإدارة..." aria-label="البحث عن المدينة أو الإدارة"></label>
+  <button class="control control-btn" id="addBtn" type="button">＋ إضافة سجل</button>
+  <button class="control control-btn" id="exportBtn" type="button">تصدير CSV</button>
+ </div>
+ <section class="kpis" id="kpis"></section>
+ <div class="grid">
+  <section class="card section">
+   <div class="section-title"><h2>مقارنة الإدارات</h2><span id="chart-caption">حسب نسبة التسجيل من الفحص</span></div>
+   <div class="bars" id="bars"></div>
+  </section>
+  <section class="card section">
+   <div class="section-title"><h2>نسبة التسجيل الإجمالية</h2><span>التسجيل ÷ الفحص</span></div>
+   <div class="donut-wrap"><div class="donut" id="donut"><div class="donut-center"><b id="donutVal">0%</b><small>نسبة التسجيل</small></div></div></div>
+  </section>
+ </div>
+ <section class="card section" style="margin-bottom:18px">
+  <div class="section-title"><h2>التفاصيل حسب الإدارة</h2><span>يمكن إضافة السجلات وتعديلها من الواجهة</span></div>
+  <div class="table-wrap">
+   <table><thead><tr><th>الدولة</th><th>الفترة</th><th>المدينة / الإدارة</th><th>تم الفحص</th><th>مسجل على السيستم</th><th>نسبة التسجيل</th><th>الفرق</th><th>الإجراء</th></tr></thead>
+   <tbody id="tbody"></tbody></table>
+  </div>
+ </section>
+ <section class="card section" id="editor" hidden>
+  <div class="section-title"><h2>إضافة / تعديل سجل</h2><span>يُستخدم نفس النموذج في نسخة Google Sheets</span></div>
+  <div class="controls">
+   <input class="control" id="fCountry" placeholder="الدولة" aria-label="الدولة">
+   <input class="control" id="fPeriod" placeholder="الفترة مثل 2026-10" aria-label="الفترة">
+   <input class="control" id="fName" placeholder="الإدارة" aria-label="الإدارة">
+   <input class="control" id="fScreened" type="number" min="0" placeholder="تم الفحص" aria-label="تم الفحص">
+   <input class="control" id="fRegistered" type="number" min="0" placeholder="المسجلون" aria-label="المسجلون">
+   <input class="control" id="fRate" type="number" min="0" max="100" step="0.1" placeholder="النسبة %" aria-label="نسبة التسجيل" title="يمكن إدخال النسبة مباشرة، وسيُعاد حساب المسجلين منها">
+   <button class="control" id="saveBtn" type="button">حفظ</button>
+   <button class="control" id="cancelBtn" type="button">إلغاء</button>
+  </div>
+ </section>
+ <section class="alert">
+  <strong>ملاحظة جودة بيانات:</strong>
+  في إدارة <b>المراغة</b> عدد الطلاب المسجلين على السيستم (<b>1,742</b>) أكبر من عدد الطلاب الذين تم فحصهم (<b>1,143</b>).
+  تم الحفاظ على الأرقام الأصلية دون تعديل؛ يُفضّل مراجعة هذا الرقم قبل اعتماد التقرير النهائي.
+ </section>
+ <div class="footer">مصدر البيانات: ملف مبادرة_الأنيميا_منطقة_شمال_سوهاج_احترافي(2).xlsx</div>
+</main>
+</div>
+<script>
+let DATA={"rows": [{"country":"مصر","period":"2026-10","name": "طما", "screened": 3158, "registered": 3021}, {"country":"مصر","period":"2026-10","name": "طهطا", "screened": 6904, "registered": 5825}, {"country":"مصر","period":"2026-10","name": "المراغة", "screened": 1143, "registered": 1742}, {"country":"مصر","period":"2026-10","name": "جهينة", "screened": 2086, "registered": 1668}]};
+const filter=document.getElementById('filter'), metric=document.getElementById('metric'), search=document.getElementById('search');
+const country=document.getElementById('country'), period=document.getElementById('period');
+let editIndex=-1;
+const APPS_SCRIPT=typeof google!=='undefined'&&google.script&&google.script.run;
+function syncBadge(t){document.getElementById('syncBadge').textContent=t}
+function refreshFromSheet(){if(!APPS_SCRIPT)return;syncBadge('جارٍ الاتصال بـ Google Sheets…');google.script.run.withSuccessHandler(d=>{DATA=d||{rows:[]};syncBadge('متصل ومحفوظ في Google Sheets');options();render()}).withFailureHandler(e=>{syncBadge('تعذر الاتصال بـ Google Sheets');console.error(e)}).getData()}
+function persistRow(row){if(!APPS_SCRIPT)return;syncBadge('جارٍ الحفظ…');google.script.run.withSuccessHandler(d=>{DATA=d;syncBadge('تم الحفظ في Google Sheets');options();resetForm();render()}).withFailureHandler(e=>{alert(e.message||'تعذر الحفظ');syncBadge('فشل الحفظ')}).saveRow(row)}
+function persistDelete(id){if(!APPS_SCRIPT)return;syncBadge('جارٍ الحذف…');google.script.run.withSuccessHandler(d=>{DATA=d;syncBadge('تم الحفظ في Google Sheets');options();render()}).withFailureHandler(e=>{alert(e.message||'تعذر الحذف')}).deleteRow(id)}
+function options(){
+ filter.innerHTML='<option value="all">كل الإدارات</option>';
+ country.innerHTML='<option value="all">كل الدول</option>';
+ period.innerHTML='<option value="all">كل الفترات</option>';
+ [...new Set(DATA.rows.map(r=>r.name))].forEach(v=>filter.insertAdjacentHTML('beforeend',`<option value="${v}">${v}</option>`));
+ [...new Set(DATA.rows.map(r=>r.country||'مصر'))].forEach(v=>country.insertAdjacentHTML('beforeend',`<option value="${v}">${v}</option>`));
+ [...new Set(DATA.rows.map(r=>r.period||'غير محدد'))].forEach(v=>period.insertAdjacentHTML('beforeend',`<option value="${v}">${v}</option>`));
+}
+const fmt=n=>new Intl.NumberFormat('ar-EG').format(n);
+function render(){
+ const selected=filter.value;
+ const q=(search.value||'').trim().toLocaleLowerCase('ar');
+ const rows=DATA.rows.filter(r=>(selected==='all'||r.name===selected)&&(country.value==='all'||(r.country||'مصر')===country.value)&&(period.value==='all'||(r.period||'غير محدد')===period.value)&&(!q||String(r.name||'').toLocaleLowerCase('ar').includes(q)||String(r.country||'').toLocaleLowerCase('ar').includes(q)));
+ const screened=rows.reduce((a,r)=>a+Number(r.screened||0),0), registered=rows.reduce((a,r)=>a+Number(r.registered||0),0), gap=screened-registered, rate=screened?registered/screened:0;
+ document.getElementById('kpis').innerHTML=[
+  ['إجمالي الطلاب الذين تم فحصهم',fmt(screened),'طالب'],
+  ['إجمالي المسجلين على السيستم',fmt(registered),'طالب'],
+  ['نسبة التسجيل الإجمالية',(rate*100).toFixed(1)+'%','من إجمالي الفحص'],
+  ['الفرق بين الفحص والتسجيل',fmt(gap),gap<0?'التسجيل أعلى من الفحص':'طالب غير مسجل']
+ ].map(x=>`<div class="card kpi"><div class="kpi-label">${x[0]}</div><div class="kpi-value">${x[1]}</div><div class="kpi-sub">${x[2]}</div></div>`).join('');
+ document.getElementById('donut').style.setProperty('--p',Math.max(0,Math.min(100,rate*100)));
+ document.getElementById('donutVal').textContent=(rate*100).toFixed(1)+'%';
+ const m=metric.value;
+ const max=Math.max(...rows.map(r=>m==='rate'?(Number(r.registered||0)/Math.max(1,Number(r.screened||0))):Math.abs(Number(r[m]||0))),1);
+ document.getElementById('chart-caption').textContent={rate:'حسب نسبة التسجيل من الفحص',screened:'حسب عدد الطلاب الذين تم فحصهم',registered:'حسب عدد المسجلين',gap:'حسب الفرق بين الفحص والتسجيل'}[m];
+ document.getElementById('bars').innerHTML=rows.map(r=>{
+  const val=m==='rate'?(Number(r.registered||0)/Math.max(1,Number(r.screened||0))):Number(r[m]||0), width=m==='rate'?val*100:(Math.abs(val)/max*100);
+  return `<div class="bar-row"><div class="name">${r.name}</div><div class="track"><div class="fill" style="width:${Math.max(2,Math.min(100,width))}%"></div></div><div class="rate">${m==='rate'?(val*100).toFixed(1)+'%':fmt(val)}</div></div>`;
+ }).join('');
+ document.getElementById('tbody').innerHTML=rows.map(r=>{
+  const rate=Number(r.registered||0)/Math.max(1,Number(r.screened||0)), status=r.registered>r.screened?'مراجعة مطلوبة':rate>=.8?'جيد':'يحتاج متابعة';
+  const cls=r.registered>r.screened?'bad':rate>=.8?'good':'warn';
+  const i=DATA.rows.indexOf(r);
+  return `<tr><td>${r.country||'مصر'}</td><td>${r.period||'غير محدد'}</td><td><b>${r.name}</b></td><td class="num"><input class="inline-input" type="number" min="0" value="${Number(r.screened||0)}" onchange="quickEdit(${i},'screened',this.value)"></td><td class="num"><input class="inline-input" type="number" min="0" value="${Number(r.registered||0)}" onchange="quickEdit(${i},'registered',this.value)"></td><td class="num"><input class="inline-input percent-input" type="number" min="0" max="100" step="0.1" value="${(rate*100).toFixed(1)}" onchange="quickRate(${i},this.value)">%</td><td class="num">${fmt(Number(r.screened||0)-Number(r.registered||0))}</td><td><button type="button" class="control-btn" onclick="editRow(${i})">تعديل</button> <button type="button" class="control-btn" onclick="deleteRow(${i})">حذف</button> <span class="status ${cls}">${status}</span></td></tr>`;
+ }).join('');
+}
+function resetForm(){editIndex=-1;['fCountry','fPeriod','fName','fScreened','fRegistered','fRate'].forEach(id=>document.getElementById(id).value='');document.getElementById('editor').hidden=true}
+function editRow(i){const r=DATA.rows[i];editIndex=i;document.getElementById('editor').hidden=false;document.getElementById('fCountry').value=r.country||'مصر';document.getElementById('fPeriod').value=r.period||'';document.getElementById('fName').value=r.name||'';document.getElementById('fScreened').value=r.screened||0;document.getElementById('fRegistered').value=r.registered||0;document.getElementById('fRate').value=(Number(r.screened||0)?(Number(r.registered||0)/Number(r.screened||0)*100):0).toFixed(1);document.getElementById('editor').scrollIntoView({behavior:'smooth',block:'center'})}
+function quickEdit(i,key,value){DATA.rows[i][key]=Math.max(0,Number(value||0));if(APPS_SCRIPT){persistRow(DATA.rows[i])}else{options();render()}}
+function quickRate(i,value){const r=DATA.rows[i], rate=Math.max(0,Math.min(100,Number(value||0)));r.registered=Math.round(Number(r.screened||0)*rate/100);if(APPS_SCRIPT){persistRow(r)}else{options();render()}}
+function deleteRow(i){if(confirm('حذف هذا السجل؟')){if(APPS_SCRIPT){persistDelete(DATA.rows[i].id)}else{DATA.rows.splice(i,1);options();render()}}}
+document.getElementById('addBtn').addEventListener('click',()=>{resetForm();document.getElementById('editor').hidden=false});
+document.getElementById('cancelBtn').addEventListener('click',resetForm);
+document.getElementById('saveBtn').addEventListener('click',()=>{const screened=Math.max(0,Number(document.getElementById('fScreened').value||0)), rateRaw=document.getElementById('fRate').value.trim(), registered=rateRaw!==''?Math.round(screened*Math.max(0,Math.min(100,Number(rateRaw)))/100):Math.max(0,Number(document.getElementById('fRegistered').value||0));const r={id:editIndex>=0?DATA.rows[editIndex].id:null,country:document.getElementById('fCountry').value.trim()||'مصر',period:document.getElementById('fPeriod').value.trim()||'غير محدد',name:document.getElementById('fName').value.trim(),screened,registered};if(!r.name){alert('اكتب اسم المدينة / الإدارة');return}if(APPS_SCRIPT){persistRow(r)}else{if(editIndex<0)DATA.rows.push(r);else DATA.rows[editIndex]=r;options();resetForm();render()}});
+document.getElementById('exportBtn').addEventListener('click',()=>{const head=['الدولة','الفترة','الإدارة','تم الفحص','المسجلون'];const body=DATA.rows.map(r=>[r.country||'مصر',r.period||'',r.name,r.screened,r.registered]);const csv='\ufeff'+[head,...body].map(row=>row.join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='anemia_dashboard_data.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)});
+filter.addEventListener('change',render); metric.addEventListener('change',render); country.addEventListener('change',render); period.addEventListener('change',render); search.addEventListener('input',render); options(); render(); if(APPS_SCRIPT)refreshFromSheet();
+</script>
+</body>
+</html>
